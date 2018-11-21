@@ -10,11 +10,11 @@ function CallAPI($method, $url, $data = false)
 
             if ($data)
                 curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data, true));
-                echo 'data2' . json_encode($data, true) . '<br>';
+                //echo 'data2' . json_encode($data, true) . '<br>';
             break;
         case "PUT":
             curl_setopt($curl, CURLOPT_PUT, 1);
-            echo $data;
+            //echo $data;
             break;
         default:
             if ($data)
@@ -33,7 +33,7 @@ function CallAPI($method, $url, $data = false)
     $result = curl_exec($curl);
 // statas code
 $code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-echo $code . '<br/>';
+//echo $code . '<br/>';
 
     curl_close($curl);
 

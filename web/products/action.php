@@ -19,14 +19,12 @@ if(isset($_POST["action"]))
   );
 
 
-  echo 'data1' . json_encode($form_data, true) . '<br>';
+  //echo 'data1' . json_encode($form_data, true) . '<br>';
   $response = CallAPI('POST',$api_url, $form_data);
 
   $result = json_decode($response, true);
     $message= $result["message"];
     echo $message;
-
-
  }
 
 }

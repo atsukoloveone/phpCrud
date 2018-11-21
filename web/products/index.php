@@ -120,16 +120,20 @@ $(document).ready(function(){
      url:"action.php",
      method:"POST",
      data:form_data,
-     success:function(data)
+     success:function(response)
      {
-      fetch_data();
+      //fetch_data();
       $('#api_crud_form')[0].reset();
       $('#apicrudModal').modal('hide');
-      if(data == 'insert')
+      if(response == 'Product was created.')
       {
        alert("Data Inserted using PHP API");
       }
-      if(data == 'update')
+      if(response == 'Unable to create product.')
+      {
+       alert("Unable to save product.");
+      }
+      if(response == 'Unable to create product.')
       {
        alert("Data Updated using PHP API");
       }
