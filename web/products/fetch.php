@@ -22,8 +22,8 @@ if(count($records) > 0)
    <td>$'.number_format((float)round( $row["price"] ,2, PHP_ROUND_HALF_DOWN),2,'.',',')  .'</td>
    <td>'.$row["category_name"].'</td>
 
-      <td><button type="button" name="edit" class="btn btn-warning btn-xs edit" id="'.$row->id.'">Edit</button></td>
-   <td><button type="button" name="delete" class="btn btn-danger btn-xs delete" id="'.$row->id.'">Delete</button></td>
+      <td><button type="button" name="edit" class="btn btn-warning btn-xs edit" id="'.$row["id"].'">Edit</button></td>
+   <td><button type="button" name="delete" class="btn btn-danger btn-xs delete" id="'.$row["id"].'">Delete</button></td>
   </tr>
   ';
  }

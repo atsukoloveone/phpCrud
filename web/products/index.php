@@ -58,11 +58,14 @@
            </div>
            <div class="form-group">
             <label>Enter Category</label>
-            <input type="text" name="category" id="category" class="form-control" />
+            <select name="category" id="category" class="form-control">
+                <option></option>
+            </select>
            </div>
        </div>
        <div class="modal-footer">
         <input type="hidden" name="hidden_id" id="hidden_id" />
+        <input type="hidden" name="category_id" id="category_id" />
         <input type="hidden" name="action" id="action" value="insert" />
         <input type="submit" name="button_action" id="button_action" class="btn btn-info" value="Insert" />
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -84,6 +87,19 @@ $(document).ready(function(){
    success:function(data)
    {
     $('tbody').html(data);
+   }
+  })
+ }
+
+ function fetch_category_data()
+ {
+  $.ajax({
+   url:"fetchcategory.php",
+   	async: false,
+   success:function(data)
+   {
+     $('select').html(data);
+     //$("#category").val($("#category_id").val());
    }
   })
  }
@@ -122,21 +138,73 @@ $(document).ready(function(){
      data:form_data,
      success:function(response)
      {
-      //fetch_data();
+      fetch_data();
       $('#api_crud_form')[0].reset();
       $('#apicrudModal').modal('hide');
       if(response == 'Product was created.')
       {
-       alert("Data Inserted using PHP API");
+       alert(response);
+      }
+      if(response == 'Product was updated.')
+      {
+       alert(response);
       }
       if(response == 'Unable to create product.')
       {
-       alert("Unable to save product.");
+       alert(response);
       }
-      if(response == 'Unable to create product.')
-      {
-       alert("Data Updated using PHP API");
-      }
+     }
+    });
+   }
+  });
+
+  $(document).on('click', '.edit', function(){
+  var id = $(this).attr('id');
+  var action = 'fetch_single';
+  $.ajax({
+   url:"action.php",
+   method:"POST",
+   data:{id:id, action:action},
+   dataType:"json"
+ })
+.then(
+   // 1つめは通信成功時のコールバック
+   function(data)
+   {
+    fetch_category_data();
+
+    $('#hidden_id').val(id);
+    $('#name').val(data.name);
+    $('#description').val(data.description);
+    $('#last_name').val(data.last_name);
+    $('#price').val(data.price);
+    $('#category_name').val(data.category_name);
+    $("#category").val(data.category_id);
+    $('#action').val('update');
+    $('#button_action').val('Update');
+    $('.modal-title').text('Edit Data');
+    $('#apicrudModal').modal('show');
+   },
+   // 2つめは通信失敗時のコールバック
+   function(data){
+       alert("読み込み失敗");
+    });
+
+
+ });
+ $(document).on('click', '.delete', function(){
+   var id = $(this).attr("id");
+   var action = 'delete';
+   if(confirm("Are you sure you want to remove this data using PHP API?"))
+   {
+    $.ajax({
+     url:"action.php",
+     method:"POST",
+     data:{id:id, action:action},
+     success:function(data)
+     {
+      fetch_data();
+      alert("Data Deleted using PHP API");
      }
     });
    }
