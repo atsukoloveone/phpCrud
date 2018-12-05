@@ -1,16 +1,32 @@
 <?php
 $upOne = realpath(__DIR__ . '/..');
-require_once($upOne .'/callApi.php');
+require_once($upOne . DIRECTORY_SEPARATOR .  'classes' . DIRECTORY_SEPARATOR . 'ProductRestClient.php');
 $base_url = 'http://www.mysite.local/api';
-$api_url = $base_url . '/product/read.php';
+$api_url = $base_url . '/product';
 
-$response = CallAPI('GET',$api_url);
+try {
+    $restclient = new ProductRestClient( $api_url );
+    $response = $restclient->execute(
+        ProductRestClient::REQUEST_TYPE_GET,
+        '/read.php',
+        $form_data,
+        array('Accept' => 'application/json')
+    );
+
+} catch ( Exception $e ) {
+    print_r( $e->getMessage() ) . PHP_EOL;
+}
+
 #var_dump($response);
-$result = json_decode($response, true);
 
+$records = json_decode( $response['body'], true);
+
+error_log($response['body'], 0);
+apache_note("phpdebug", "php debug message: {$_SERVER['REMOTE_ADDR']} ({$_SERVER['HTTP_USER_AGENT']})");
+apache_note("phpdebug", $response['body']);
 
 $output = '';
-$records = $result["records"];
+$records = $records["records"];
 if(count($records) > 0)
 {
  foreach($records as $row)

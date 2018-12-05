@@ -1,18 +1,36 @@
 <?php
 $upOne = realpath(__DIR__ . '/..');
-require_once($upOne .'/callApi.php');
+require_once($upOne . DIRECTORY_SEPARATOR .  'classes' . DIRECTORY_SEPARATOR . 'ProductRestClient.php');
 $base_url = 'http://www.mysite.local/api';
-$api_url = $base_url . '/category/read.php';
 
-$response = CallAPI('GET',$api_url);
+$api_url = $base_url . '/category';
+
+try {
+    $restclient = new ProductRestClient( $api_url );
+    $response = $restclient->execute(
+        ProductRestClient::REQUEST_TYPE_GET,
+        '/read.php',
+        $form_data,
+        array('Accept' => 'application/json')
+    );
+
+} catch ( Exception $e ) {
+    print_r( $e->getMessage() ) . PHP_EOL;
+}
+
 #var_dump($response);
-$result = json_decode($response, true);
-error_log($response, 0);
+
+
+
+$records = json_decode( $response['body'], true);
+$records = $records["records"];
+
+error_log($response['body'], 0);
 apache_note("phpdebug", "php debug message: {$_SERVER['REMOTE_ADDR']} ({$_SERVER['HTTP_USER_AGENT']})");
-apache_note("phpdebug", $response);
+apache_note("phpdebug", $response['body']);
 
 $output = '    <option value="-1">Select category...</option>';
-$records = $result["records"];
+
 if(count($records) > 0)
 {
  foreach($records as $row)

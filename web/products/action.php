@@ -12,7 +12,7 @@ if(isset($_POST["action"]))
 {
  if($_POST["action"] == 'insert')
  {
-  $api_url = $base_url . '/product/create.php';
+  $api_url = $base_url . '/product';
   $form_data = array(
    'name' => $_POST['name'],
    'description'  => $_POST['description'],
@@ -21,11 +21,19 @@ if(isset($_POST["action"]))
    'created'=> date("Y-m-d H:i:s")
   );
 
+  try {
+      $restclient = new ProductRestClient( $api_url );
+      $response = $restclient->execute(
+          ProductRestClient::REQUEST_TYPE_POST,
+          '/create.php',
+          $form_data,
+          array('Accept' => 'application/json')
+      );
+      echo $response['body'];
+  } catch ( Exception $e ) {
+      print_r( $e->getMessage() ) . PHP_EOL;
+  }
 
-  $response = CallAPI('POST',$api_url, $form_data);
-  $result = json_decode($response, true);
-    $message= $result["message"];
-    echo $message;
  }
 
 
@@ -90,12 +98,28 @@ if(isset($_POST["action"]))
  if($_POST["action"] == 'delete')
  {
   $id = $_POST['id'];
-  $api_url = $base_url . '/product/delete.php';
+  $api_url = $base_url . '/product';
   $form_data = array(
      'id'=> $id
   );
-  $response = CallAPI('POST',$api_url, $form_data);
-  echo $response;
+  try {
+      $restclient = new ProductRestClient( $api_url );
+      $response = $restclient->execute(
+          ProductRestClient::REQUEST_TYPE_POST,
+          '/delete.php',
+          $form_data,
+          array('Accept' => 'application/json')
+      );
+      $result = json_decode($response["body"], true);
+      $message= $result["message"];
+      echo $message;
+
+  } catch ( Exception $e ) {
+      print_r( $e->getMessage() ) . PHP_EOL;
+  }
+
+  //$response = CallAPI('POST',$api_url, $form_data);
+  //echo $response;
  }
 }
 
