@@ -1,7 +1,10 @@
 <?php
 $upOne = realpath(__DIR__ . '/..');
 require_once($upOne . DIRECTORY_SEPARATOR .  'classes' . DIRECTORY_SEPARATOR . 'ProductRestClient.php');
-$base_url = 'http://www.mysite.local/api';
+$ini_array = parse_ini_file($upOne . DIRECTORY_SEPARATOR .  'ini' . DIRECTORY_SEPARATOR . 'property.ini');
+
+$base_url = $ini_array['URL'];
+
 $api_url = $base_url . '/product';
 
 try {

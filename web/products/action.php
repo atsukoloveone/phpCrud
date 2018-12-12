@@ -1,11 +1,12 @@
 <?php
 
+
 //action.php
 $upOne = realpath(__DIR__ . '/..');
-//require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . 'RestClient.php';
 require_once($upOne . DIRECTORY_SEPARATOR .  'classes' . DIRECTORY_SEPARATOR . 'ProductRestClient.php');
-require_once($upOne .'/callApi.php');
-$base_url = 'http://www.mysite.local/api';
+$ini_array = parse_ini_file($upOne . DIRECTORY_SEPARATOR .  'ini' . DIRECTORY_SEPARATOR . 'property.ini');
+
+$base_url = $ini_array['URL'];
 
 
 if(isset($_POST["action"]))

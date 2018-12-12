@@ -10,7 +10,7 @@
   <div class="container">
    <br />
 
-   <h3 align="center">PHP Mysql REST API CRUD</h3>
+   <h3 align="center">PHP Mysql REST API CRUD Test</h3>
    <br />
    <div align="right" style="margin-bottom:5px;">
     <button type="button" name="add_button" id="add_button" class="btn btn-success btn-xs">Add</button>
